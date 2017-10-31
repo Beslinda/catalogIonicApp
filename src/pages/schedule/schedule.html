@@ -3,30 +3,31 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <button ion-button color="light" outline>Brand</button>
 
-    <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
+    <!-- <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
       <ion-segment-button value="all">
         All
       </ion-segment-button>
       <ion-segment-button value="favorites">
         Favorites
       </ion-segment-button>
-    </ion-segment>
+    </ion-segment> -->
 
     <ion-buttons end>
-      <button ion-button icon-only (click)="presentFilter()">
-        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+      <button ion-button icon-only (ionChange)="updateSchedule('favorites')">
+        <ion-icon ios="ion-ios-heart-outline" md="md-heart-outline"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 
-  <ion-toolbar no-border-top>
+  <!-- <ion-toolbar no-border-top>
     <ion-searchbar color="primary"
                    [(ngModel)]="queryText"
                    (ionInput)="updateSchedule()"
                    placeholder="Search">
     </ion-searchbar>
-  </ion-toolbar>
+  </ion-toolbar> -->
 </ion-header>
 
 <ion-content>
@@ -34,17 +35,26 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ion-card class="card-background-page">
+    <img src="assets/img/card-saopaolo.png"/>
+    <div class="card-title">São Paulo</div>
+    <div class="card-subtitle">41 Listings</div>
+  </ion-card>
+
   <ion-list #scheduleList [hidden]="shownSessions === 0">
 
-    <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
+    <ion-card class="home-categories" col-6 *ngFor="let group of groups" [hidden]="group.hide">
+      <div (click)="goToSessionDetail(session)">
+        <img src="assets/img/nin-live.png"/>
+        <ion-card-content>
+          <ion-card-title>
+            {{group.category}}
+          </ion-card-title>
+        </ion-card-content>
+      </div>
+    </ion-card>
 
-      <ion-item-divider sticky>
-        <ion-label>
-          {{group.time}}
-        </ion-label>
-      </ion-item-divider>
-
-      <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase" [hidden]="session.hide">
+      <!-- <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase" [hidden]="session.hide">
 
         <button ion-item (click)="goToSessionDetail(session)">
           <h3>{{session.name}}</h3>
@@ -64,10 +74,7 @@
           </button>
         </ion-item-options>
 
-      </ion-item-sliding>
-
-    </ion-item-group>
-
+      </ion-item-sliding> -->
   </ion-list>
 
   <ion-list-header [hidden]="shownSessions > 0">
